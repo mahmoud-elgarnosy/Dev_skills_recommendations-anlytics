@@ -18,7 +18,7 @@ where nvidia-smi > nul
     )
 
 rem Install other packages from requirements.yml
-conda env update --name Rec-skills --file requirements.yml -y
+rem conda env update --name Rec-skills --file requirements.yml -y
 
 rem Install python kernel to run jupyter notebook
 conda install -c anaconda ipykernel -y
