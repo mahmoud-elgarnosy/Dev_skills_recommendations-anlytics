@@ -1,0 +1,15 @@
+artifact_uri: file:///E:/M_Hassan/AI_Work/StackOverflow_skills_analysis/dev_skills_recommendations-anlytics/notebooks/../models/runs/958618704808840933/1322b09ddb9d426cad3ac3daf4660537/artifacts
+end_time: 1690991483315
+entry_point_name: ''
+experiment_id: '958618704808840933'
+lifecycle_stage: active
+run_id: 1322b09ddb9d426cad3ac3daf4660537
+run_name: 3.basic_XGBoost_Model
+run_uuid: 1322b09ddb9d426cad3ac3daf4660537
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1690991483276
+status: 3
+tags: []
+user_id: mhassan

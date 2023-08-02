@@ -30,7 +30,7 @@ class MlflowUtils:
     def save_model_data(self, name, details, model_object):
         model_data = {'name': name,
                       'details': details,
-                      'object': model_object}
+                      'model_object': model_object}
 
         self.save_pickle_data(model_data, 'model.pkl')
 
@@ -74,10 +74,11 @@ class MlflowUtils:
         return logged_data
 
     @staticmethod
-    def get_runs(experiment_name="skills_rec_analysis"):
+    def get_runs(tracking_uri='../models/runs', experiment_name='skills_rec_analysis'):
+        mlflow.set_tracking_uri(tracking_uri)
+        mlflow.set_experiment(experiment_name)
         client = MlflowClient()
         experiment = client.get_experiment_by_name(experiment_name)
-
         runs = mlflow.search_runs([experiment.experiment_id])
         if runs.empty:
             raise Exception('Sorry, There are no runs for the specified experiment_id')
@@ -85,20 +86,20 @@ class MlflowUtils:
             return runs
 
     @staticmethod
-    def get_run_names(experiment_name="skills_rec_analysis"):
-        runs = MlflowUtils.get_runs(experiment_name)
+    def get_run_names(tracking_uri='../models/runs', experiment_name='skills_rec_analysis'):
+        runs = MlflowUtils.get_runs(experiment_name=experiment_name)
         run_names = list(runs['tags.mlflow.runName'])
         return run_names
 
     @staticmethod
-    def get_run_id_by_run_name(run_name, experiment_name="skills_rec_analysis"):
-        runs = MlflowUtils.get_runs(experiment_name)
+    def get_run_id_by_run_name(run_name, experiment_name='skills_rec_analysis'):
+        runs = MlflowUtils.get_runs(experiment_name=experiment_name)
         run_id = runs[runs['tags.mlflow.runName'] == run_name]['run_id']
         return run_id
 
     @staticmethod
-    def get_run_id_by_metrix(experiment_name="skills_rec_analysis", metrix_name='precision', score='highest'):
+    def get_run_id_by_metrix(experiment_name='skills_rec_analysis', metrix_name='precision', score='highest'):
         ascending = False if score == 'highest' else True
-        runs = MlflowUtils.get_runs(experiment_name)
+        runs = MlflowUtils.get_runs(experiment_name = experiment_name)
         run_id = runs.sort_values(by=f'metrics.{metrix_name}', ascending=ascending).loc[0, 'run_id']
         return run_id
