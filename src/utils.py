@@ -100,6 +100,28 @@ class MlflowUtils:
     @staticmethod
     def get_run_id_by_metrix(experiment_name='skills_rec_analysis', metrix_name='precision', score='highest'):
         ascending = False if score == 'highest' else True
-        runs = MlflowUtils.get_runs(experiment_name = experiment_name)
+        runs = MlflowUtils.get_runs(experiment_name=experiment_name)
         run_id = runs.sort_values(by=f'metrics.{metrix_name}', ascending=ascending).loc[0, 'run_id']
         return run_id
+
+
+def save_results(artifact_temp, load_skills_dev, x_train_index, x_test_index,
+                 job_names, features_names, model):
+    mlflow_utils_original_features = MlflowUtils(artifact_temp=artifact_temp)
+    mlflow_utils_original_features.save_data(path=load_skills_dev,
+                                             training_indices=x_train_index,
+                                             testing_indices=x_test_index,
+                                             target_names=job_names,
+                                             features_names=features_names)
+
+    mlflow_utils_original_features.save_model_data(name='basic_model_original_features',
+                                                   details=str(model),
+                                                   model_object=model)
+
+    mlflow_utils_original_features.save_matrices(classification_report_original_features)
+
+    original_features_metrics = classification_report_original_features['original_features-test'].loc['Mean', :]
+    original_features_metrics = pd.Series(original_features_metrics).to_dict()
+    mlflow_utils_original_features.save_run_details('1.basic_model_with_original_features',
+                                                    metrics=original_features_metrics)
+
