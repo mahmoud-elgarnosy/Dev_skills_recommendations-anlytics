@@ -12,23 +12,22 @@ _, _, categories_skills = simulate_utils.get_all_skills()
 
 
 def get_icon(skill: str):
-    skill = skill.replace('-', '').replace(' ', '').replace('+', 'plus')
+    skill = skill.replace('-', '').replace(' ', '').replace('+', 'plus').replace('.js', 'js').replace('.', 'dot-')
     if '/' in skill:
-        skill = skill.split('/')[1]
-    icon = DashIconify(
+        if skill == 'Bash/Shell':
+            skill = skill.split('/')[0]
+        else:
+            skill = skill.split('/')[1]
+
+    return DashIconify(
         icon=f"devicon:{skill.lower()}")
-    if icon:
-        return icon
-    else:
-        return DashIconify(
-            icon=f"logos:{skill.lower()}")
 
 
 def get_checklist(category, skills):
     if category in ['Languages']:
         return dcc.Checklist(
             id={"type": "skill-checkbox", "category": category},
-            options=[{'label': [get_icon(skill), skill], 'value': skill} for skill in skills],
+            options=[{'label': [get_icon(skill), skill.replace('(Delphi_C++ Builder)','')], 'value': skill} for skill in skills],
             value=[],
             style={'margin': '10px', 'display': 'grid', 'gridTemplateColumns': 'repeat(2, 1fr)'},
             labelStyle={'fontSize': '14px', 'margin': '5px'}
@@ -36,7 +35,7 @@ def get_checklist(category, skills):
     else:
         return dcc.Checklist(
             id={"type": "skill-checkbox", "category": category},
-            options=[{'label': [get_icon(skill), skill], 'value': skill} for skill in skills],
+            options=[{'label': [get_icon(skill), skill.replace('(Delphi_C++ Builder)','')], 'value': skill} for skill in skills],
             value=[],
             style={'margin': '10px', 'verticalAlign': 'top'},
             labelStyle={'fontSize': '14px', 'margin': '5px'}
@@ -46,14 +45,18 @@ def get_checklist(category, skills):
 app.layout = html.Div([
     html.H1("Job Category Predictor", style={'textAlign': 'center'}),
 
-    # Checkbox section for each category
-    html.Div(id="skill-checkboxes", children=[
-        html.Div([
-            html.H3(category, style={'textAlign': 'center'}),
-            get_checklist(category, skills),
-        ])
-        for category, skills in categories_skills.items()],
-             style={'width': '80%', 'display': 'flex', 'flexWrap': 'wrap', 'margin': 'auto'}),
+    # Scrollable container for checkboxes
+    html.Div(
+        id="checkbox-container",
+        children=[
+            html.Div([
+                html.H3(category, style={'textAlign': 'center'}),
+                get_checklist(category, skills),
+            ])
+            for category, skills in categories_skills.items()
+        ],
+        style={'width': '100%', 'display': 'flex', 'flexWrap': 'wrap', 'margin': 'auto'},
+    ),
 
     # Bar chart section
     dcc.Graph(id="probability-chart"),
