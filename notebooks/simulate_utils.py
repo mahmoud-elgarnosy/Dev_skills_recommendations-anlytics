@@ -1,9 +1,16 @@
-import prediction_utils as utils
+import notebooks.prediction_utils as utils
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
+import os
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+LOAD_PATH = '../data/interim/'
+LOAD_PATH = os.path.join(script_dir, LOAD_PATH)
+LOAD_SKILLS_DEV = '7.0-Chosen_features_and_roles.pkl'
+skills_dev_df = pd.read_pickle(LOAD_PATH + LOAD_SKILLS_DEV)
 
 
-def build_heatmap_dev_skills_df(skills_dev_df):
+def build_heatmap_dev_skills_df():
     developers_skills = {}
     for dev_type in skills_dev_df['DevType']:
         mask = skills_dev_df['DevType'][dev_type] == 1
@@ -18,18 +25,18 @@ def build_heatmap_dev_skills_df(skills_dev_df):
     return developers_skills_scaling
 
 
-def get_related_skills(skills_dev_df, target_jop, already_have_skills):
-    heatmap_dev_skills_df = build_heatmap_dev_skills_df(skills_dev_df)
+def get_related_skills(target_jop, already_have_skills):
+    heatmap_dev_skills_df = build_heatmap_dev_skills_df()
     dev_skills = heatmap_dev_skills_df.loc[target_jop, :].sort_values(ascending=False)
     related_skills = dev_skills[dev_skills > 0]
     related_skills = related_skills[~related_skills.index.isin(already_have_skills)].index
     return related_skills
 
 
-def get_recommended_skills(skills_dev_df, target_jop, already_have_skills, number_recommended_skills=5):
+def get_recommended_skills(target_jop, already_have_skills, number_recommended_skills=5):
     already_have_skills_list = already_have_skills.copy()
     features_names, target_names, model = utils.fetch_best_model_data()
-    related_skills = get_related_skills(skills_dev_df, target_jop, already_have_skills_list)
+    related_skills = get_related_skills(target_jop, already_have_skills_list)
     recommended_skills = []
 
     for i in range(number_recommended_skills):
@@ -58,19 +65,21 @@ def get_recommended_skills(skills_dev_df, target_jop, already_have_skills, numbe
     return recommended_skills
 
 
-def get_all_skills(skills_dev_df):
-    categories = set(skills_dev_df.drop('DevType', axis=1, level=0).columns.get_level_values(level=0))
-    all_skills = list(skills_dev_df.columns)
+def get_all_skills():
+    df_columns = skills_dev_df.drop('DevType', axis=1, level=0).columns
+    categories = set(df_columns.get_level_values(level=0))
+    all_skills = list(df_columns)
     all_skills = [(sub[1], sub[0]) for sub in all_skills]
     all_skills = dict(all_skills)
-    return all_skills, categories
+    categories_skills = {c: list(skills_dev_df[c].columns) for c in categories}
+    return all_skills, categories, categories_skills
 
 
-def get_recommended_categories(skills_dev_df, target_jop, already_have_skills, number_recommended_skills=5):
-    recommended_skills = get_recommended_skills(skills_dev_df, target_jop, already_have_skills,
+def get_recommended_categories(target_jop, already_have_skills, number_recommended_skills=5):
+    recommended_skills = get_recommended_skills(target_jop, already_have_skills,
                                                 number_recommended_skills)
 
-    all_skills, categories = get_all_skills(skills_dev_df)
+    all_skills, categories, _ = get_all_skills()
     recommended_categories = {key: [] for key in categories}
     for skill in recommended_skills:
         skill_category = all_skills[skill]

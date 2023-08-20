@@ -5,7 +5,9 @@ from sklearn.preprocessing import StandardScaler
 
 def fetch_best_model_data():
     run_id = MlflowUtils.get_run_id_by_metrix(metrix_name='recall')
-    logged_data = MlflowUtils.fetch_logged_data(tracking_uri='../models/runs', run_id=run_id)
+    logged_data = MlflowUtils.fetch_logged_data(tracking_uri='../models/runs',
+                                                experiment_name='skills_rec_analysis',
+                                                run_id=run_id)
     features_names = logged_data['data_details']['features_names']
     target_names = logged_data['data_details']['target_names']
     model = logged_data['model']['model_object']

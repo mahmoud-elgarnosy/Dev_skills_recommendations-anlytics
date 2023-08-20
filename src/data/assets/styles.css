@@ -1,0 +1,10 @@
+.checkbox-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.checkbox-column {
+    flex: 1;
+    max-width: calc(50% - 20px);
+    margin: 10px;
+}

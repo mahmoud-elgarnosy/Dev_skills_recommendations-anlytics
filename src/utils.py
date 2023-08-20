@@ -60,13 +60,14 @@ class MlflowUtils:
                 mlflow.log_metric(metric, score)
 
     @staticmethod
-    def fetch_logged_data(tracking_uri, run_id):
-        mlflow.set_tracking_uri(tracking_uri)
+    def fetch_logged_data(tracking_uri, experiment_name, run_id):
+        tracking_uri = MlflowUtils.set_tracking_experiment()
+        experiment_id = mlflow.get_experiment_by_name(experiment_name).experiment_id
+        files_path = os.path.join(tracking_uri, experiment_id, run_id, 'artifacts')
         run = mlflow.get_run(run_id)
-        artifacts_path = run.info.artifact_uri.split('file:///')[-1]
         logged_data = {'metrics': run.data.metrics}
-        for file in os.listdir(artifacts_path):
-            file_path = os.path.join(artifacts_path, file)
+        for file in os.listdir(files_path):
+            file_path = os.path.join(files_path, file)
             with open(file_path, "rb") as f:
                 data_name = file.split('.')[0]
                 logged_data[data_name] = pickle.load(f)
@@ -75,8 +76,7 @@ class MlflowUtils:
 
     @staticmethod
     def get_runs(tracking_uri='../models/runs', experiment_name='skills_rec_analysis'):
-        mlflow.set_tracking_uri(tracking_uri)
-        mlflow.set_experiment(experiment_name)
+        MlflowUtils.set_tracking_experiment(tracking_uri=tracking_uri, experiment_name=experiment_name)
         client = MlflowClient()
         experiment = client.get_experiment_by_name(experiment_name)
         runs = mlflow.search_runs([experiment.experiment_id])
@@ -87,7 +87,7 @@ class MlflowUtils:
 
     @staticmethod
     def get_run_names(tracking_uri='../models/runs', experiment_name='skills_rec_analysis'):
-        runs = MlflowUtils.get_runs(experiment_name=experiment_name)
+        runs = MlflowUtils.get_runs(tracking_uri=tracking_uri, experiment_name=experiment_name)
         run_names = list(runs['tags.mlflow.runName'])
         return run_names
 
@@ -104,24 +104,16 @@ class MlflowUtils:
         run_id = runs.sort_values(by=f'metrics.{metrix_name}', ascending=ascending).loc[0, 'run_id']
         return run_id
 
+    @staticmethod
+    def get_tracking_uri(tracking_uri='../models/runs'):
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        run_path = os.path.join(script_dir, tracking_uri)
+        tracking_uri = os.path.relpath(run_path, os.path.abspath(os.getcwd()))
+        return tracking_uri
 
-def save_results(artifact_temp, load_skills_dev, x_train_index, x_test_index,
-                 job_names, features_names, model):
-    mlflow_utils_original_features = MlflowUtils(artifact_temp=artifact_temp)
-    mlflow_utils_original_features.save_data(path=load_skills_dev,
-                                             training_indices=x_train_index,
-                                             testing_indices=x_test_index,
-                                             target_names=job_names,
-                                             features_names=features_names)
-
-    mlflow_utils_original_features.save_model_data(name='basic_model_original_features',
-                                                   details=str(model),
-                                                   model_object=model)
-
-    mlflow_utils_original_features.save_matrices(classification_report_original_features)
-
-    original_features_metrics = classification_report_original_features['original_features-test'].loc['Mean', :]
-    original_features_metrics = pd.Series(original_features_metrics).to_dict()
-    mlflow_utils_original_features.save_run_details('1.basic_model_with_original_features',
-                                                    metrics=original_features_metrics)
-
+    @staticmethod
+    def set_tracking_experiment(tracking_uri='../models/runs', experiment_name='skills_rec_analysis'):
+        tracking_uri = MlflowUtils.get_tracking_uri(tracking_uri)
+        mlflow.set_tracking_uri(tracking_uri)
+        mlflow.set_experiment(experiment_name)
+        return tracking_uri
