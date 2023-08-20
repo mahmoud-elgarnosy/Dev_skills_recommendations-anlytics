@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/protofolio_projects/Dev_skills_recommendations-anlytics/notebooks/../models/runs/735982700926372623/b4928cc3e3bf4f21b8b9138310447d2c/artifacts
+end_time: 1692264336934
+entry_point_name: ''
+experiment_id: '735982700926372623'
+lifecycle_stage: active
+run_id: b4928cc3e3bf4f21b8b9138310447d2c
+run_name: Logistic-Regression_Clustered-Features_1.0.0
+run_uuid: b4928cc3e3bf4f21b8b9138310447d2c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1692264336899
+status: 3
+tags: []
+user_id: mahmo

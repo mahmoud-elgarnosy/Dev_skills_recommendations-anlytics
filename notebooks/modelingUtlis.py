@@ -33,6 +33,7 @@ class ModelingUtils:
         self.X_test, self.Y_test = None, None
         self.sample_weights = None
         self.job_names = None
+        self.all_classification_report = []
         self.pipline_model = pipline_model
 
         self.split_data()
@@ -61,7 +62,6 @@ class ModelingUtils:
         self.job_names = jobs_freq['job_type'].values
 
     def train_evaluate_model_features(self):
-        all_classification_report = []
         self.pipline_model.fit(self.X_train, self.Y_train, multioutputclassifier__sample_weight=self.sample_weights)
         for j, evaluate_type in enumerate(['train', 'test']):
             classification_report = {}
@@ -82,30 +82,30 @@ class ModelingUtils:
 
             classification_report.columns = pd.MultiIndex.from_product(
                 [[evaluate_type], classification_report.columns])
-            if isinstance(all_classification_report, pd.DataFrame):
-                all_classification_report = all_classification_report.merge(classification_report, left_index=True,
-                                                                            right_index=True)
+            if isinstance(self.all_classification_report, pd.DataFrame):
+                self.all_classification_report = self.all_classification_report.merge(classification_report,
+                                                                                      left_index=True,
+                                                                                      right_index=True)
             else:
-                all_classification_report = classification_report.copy()
+                self.all_classification_report = classification_report.copy()
 
-        return self.pipline_model, all_classification_report
+        return self.pipline_model, self.all_classification_report
 
+    def save_results(self, all_classification_report, model_name, data_path, features):
+        mlflow_utils = MlflowUtils(artifact_temp='../models/temp/' + model_name)
+        mlflow_utils.save_data(path=data_path,
+                               training_indices=self.X_train.index,
+                               testing_indices=self.X_test.index,
+                               target_names=self.job_names,
+                               features_names=features)
 
-    def save_results(self, data_path):
-        mlflow_utils_original_features = MlflowUtils(artifact_temp='../models/temp/basic_model_original_features')
-        mlflow_utils_original_features.save_data(path=data_path,
-                                                 training_indices=self.X_train.index,
-                                                 testing_indices=self.X_test.index,
-                                                 target_names=self.job_names,
-                                                 features_names=original_features)
+        mlflow_utils.save_model_data(name=model_name,
+                                     details=str(self.pipline_model),
+                                     model_object=self.pipline_model)
 
-        mlflow_utils_original_features.save_model_data(name='basic_model_original_features',
-                                                       details=str(original_features_model),
-                                                       model_object=original_features_model)
+        mlflow_utils.save_matrices(all_classification_report)
 
-        mlflow_utils_original_features.save_matrices(classification_report_original_features)
-
-        original_features_metrics = classification_report_original_features['original_features-test'].loc['Mean', :]
-        original_features_metrics = pd.Series(original_features_metrics).to_dict()
-        mlflow_utils_original_features.save_run_details('1.basic_model_with_original_features',
-                                                        metrics=original_features_metrics)
+        summarized_metrics = all_classification_report['test'].loc['Mean', :]
+        summarized_metrics = pd.Series(summarized_metrics).to_dict()
+        mlflow_utils.save_run_details(model_name,
+                                      metrics=summarized_metrics)

@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/protofolio_projects/Dev_skills_recommendations-anlytics/notebooks/../models/runs/735982700926372623/2a572ea634b64d4e99ac358082c8906e/artifacts
+end_time: 1692264453953
+entry_point_name: ''
+experiment_id: '735982700926372623'
+lifecycle_stage: active
+run_id: 2a572ea634b64d4e99ac358082c8906e
+run_name: XGB_1.0.0
+run_uuid: 2a572ea634b64d4e99ac358082c8906e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1692264453895
+status: 3
+tags: []
+user_id: mahmo
