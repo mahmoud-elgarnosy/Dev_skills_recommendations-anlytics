@@ -8,6 +8,7 @@ app = dash.Dash(__name__)
 
 # Sample skill categories and skills
 _, _, categories_skills = simulate_utils.get_all_skills()
+categories_skills = {"Languages": categories_skills["Languages"], **categories_skills}
 
 
 def get_icon(skill: str):
@@ -23,7 +24,8 @@ def get_icon(skill: str):
 def get_checklist(category, skills):
     return dcc.Checklist(
         id={"type": "skill-checkbox", "category": category},
-        options=[{'label': [get_icon(skill), skill.replace('(Delphi_C++ Builder)', '')], 'value': skill} for skill in skills],
+        options=[{'label': [get_icon(skill), skill.replace('(Delphi_C++ Builder)', '')], 'value': skill} for skill in
+                 skills],
         value=[],
         style={'verticalAlign': 'top', 'width': '100%', 'display': 'flex', 'flexWrap': 'wrap', 'margin': 'auto'},
         labelStyle={'fontSize': '14px', 'margin': '5px'},
@@ -32,7 +34,7 @@ def get_checklist(category, skills):
 
 
 def create_selected_skills_output(selected_skills_dict):
-    output_children = [html.H2("Selected Skills", style={'textAlign': 'center'})]
+    output_children = [html.H2("Selected skills", style={'textAlign': 'center'})]
 
     for category, skills in selected_skills_dict.items():
         if skills:
@@ -48,6 +50,29 @@ def create_selected_skills_output(selected_skills_dict):
     return output_children
 
 
+def create_min_max_skills_header():
+    return html.Div(
+        id="min-max-skills-header",
+        children=[html.H2("Select between 3 and 56 skills", style={'textAlign': 'center'})]
+    )
+
+
+def create_message_output():
+    return html.Div(id="message-div", className="message-output")
+
+
+def create_probability_chart():
+    return html.Div(
+        id="chart-container",
+        className='pretty_container',
+        children=[
+            html.H2('Current job expectations', style={'textAlign': 'center'}),
+            create_message_output(),
+            dcc.Graph(id="probability-chart"),
+        ],
+    )
+
+
 app.layout = html.Div([
     html.H1("Job Category Predictor", style={'textAlign': 'center'}),
 
@@ -59,11 +84,12 @@ app.layout = html.Div([
             html.Div(
                 id="control-board",
                 children=[
-                    html.H2("Select Skills", style={'textAlign': 'center'}),
+                    create_min_max_skills_header(),
                     *[html.Div([
                         html.Div(html.H3(category, style={'textAlign': 'center'}), className='column-left'),
                         html.Div(get_checklist(category, skills), className='column-right'),
-                    ], className='row', style={'width': '100%', 'margin': 'auto', 'paddingBottom': '10px', 'borderBottom': '1px solid #ccc'})
+                    ], className='row', style={'width': '100%', 'margin': 'auto', 'paddingBottom': '10px',
+                                               'borderBottom': '1px solid #ccc'})
                         for category, skills in categories_skills.items()],
                 ],
                 style={'width': '60%', 'float': 'left'}
@@ -72,14 +98,7 @@ app.layout = html.Div([
             # Chart section on the right half
             html.Div([
                 html.Div(id="selected-skills-output", className='pretty_container'),
-                html.Div(
-                    id="chart-container",
-                    className='pretty_container',
-                    children=[
-                        html.H2('Current job expectations', style={'textAlign': 'center'}),
-                        dcc.Graph(id="probability-chart"),
-                    ],
-                ),
+                create_probability_chart(),
 
             ], style={'width': '45%', 'float': 'right'}),
         ],
@@ -104,6 +123,14 @@ def update_selected_skills(*selected_skills):
      for category in categories_skills.keys()]
 )
 def update_chart(*selected_skills):
+    selected_skills_count = sum(len(skills) if skills else 0 for skills in selected_skills)
+
+    if selected_skills_count < 3:
+        return {}
+
+    if selected_skills_count > 56:
+        return {}
+
     if all(skill_list is None for skill_list in selected_skills):
         return {}
 
@@ -120,6 +147,23 @@ def update_chart(*selected_skills):
         return fig
     else:
         return {}
+
+
+@app.callback(
+    Output("message-div", "children"),
+    [Input({"type": "skill-checkbox", "category": category}, "value")
+     for category in categories_skills.keys()]
+)
+def update_message(*selected_skills):
+    selected_skills_count = sum(len(skills) if skills else 0 for skills in selected_skills)
+
+    if selected_skills_count < 3:
+        return "Please select at least 3 skills to generate the figure."
+
+    if selected_skills_count > 56:
+        return "Selected skills are more than the threshold of 56."
+
+    return ""
 
 
 def plot_predictions_jobs(predictions, threshold=20):
