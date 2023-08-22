@@ -86,3 +86,7 @@ def get_recommended_categories(target_jop, already_have_skills, number_recommend
         recommended_categories[skill_category].append(skill)
 
     return recommended_categories
+
+
+def get_all_jobs():
+    return list(skills_dev_df['DevType'].columns)
