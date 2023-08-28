@@ -3,7 +3,6 @@ body {
   /*overflow:hidden*/
   /* margin: 5%; */
 }
-/* Create two unequal columns that floats next to each other */
 
 
 .column-left {
@@ -25,7 +24,6 @@ body {
 }
 
 .pretty_container {
-  border-radius: 5px;
   background-color: #f9f9f9;
   margin: 10px;
   padding: 15px;
@@ -33,16 +31,27 @@ body {
   box-shadow: 2px 2px 2px lightgrey;
 }
 
-.control_Panel {
-  font-family: "Open Sans", sans-serif;
-  color: #fff;
 
-  background-color: #415b86;
-  border-radius: 5px;
-  /* background-color: #f9f9f9; */
-  margin: 10px;
-  padding: 15px;
-  position: relative;
-  box-shadow: 2px 2px 2px lightgrey
+.pretty_container .color-box {
+    width: 50px;
+    height: 100%;
+    display: inline;
+    box-shadow: 2px 2px 2px lightgrey;
+    background-color: #f9f9f9;
+    position: absolute;
+    left: calc(100% - 50px);;
+    top: 0;
+}
+
+.top_header{
+    margin-right: 20px;
 
 }
+.graph{
+    border-radius: 5px;
+}
+
+h2, p {
+    margin: 0; /* Remove margin */
+    padding: 0; /* Remove padding */
+  }

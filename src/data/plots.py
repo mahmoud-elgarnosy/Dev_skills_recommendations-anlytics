@@ -63,7 +63,7 @@ def calculate_most_common_jobs(threshold=10):
     return most_10_freq_jobs
 
 
-def create_employment_vs_dev_type_chart(dev_types):
+def calculate_employment_dev_count_percentage(dev_types):
     # Define employment types
     employment_columns = {
         'full-time': 'Employed_full-time',
@@ -90,6 +90,12 @@ def create_employment_vs_dev_type_chart(dev_types):
     # Calculate percentages
     employment_dev_percentage = (employment_dev_count / employment_dev_count.sum(axis=0)) * 100
     employment_dev_percentage = employment_dev_percentage.drop('full-time', axis=0)
+
+    return employment_dev_count, employment_dev_percentage
+
+
+def create_employment_vs_dev_type_chart(dev_types):
+    employment_dev_count, employment_dev_percentage = calculate_employment_dev_count_percentage(dev_types)
 
     # Create the figure
     fig = go.Figure()
@@ -221,14 +227,14 @@ def create_jobs_salaries_chart():
     fig = px.scatter(x=dev_years_comp.index,
                      y=dev_years_comp.CompTotal,
                      size=dev_years_comp.YearsCodePro.values)
-    layout = go.Layout(
-        title=dict(
-            text="Most Paid Jobs With Respect To Years Of Experience",
-            font_size=20,
-            x=.5),
-    )
-
-    fig.update_layout(layout)
+    # layout = go.Layout(
+    #     title=dict(
+    #         text="Most Paid Jobs With Respect To Years Of Experience",
+    #         font_size=20,
+    #         x=.5),
+    # )
+    #
+    # fig.update_layout(layout)
     fig.update_yaxes(
         title="Salary",
         tickangle=45,
@@ -239,7 +245,7 @@ def create_jobs_salaries_chart():
         tickvals=np.arange(len(dev_years_comp.index)),
         ticktext=[change_labels(x) for x in dev_years_comp.index],
         tickangle=45,
-        tickfont=dict(family='Rockwell', size=15))
+        tickfont=dict(family='Rockwell', size=12))
 
     return fig
 
