@@ -226,15 +226,20 @@ def create_jobs_salaries_chart():
     # plot figure
     fig = px.scatter(x=dev_years_comp.index,
                      y=dev_years_comp.CompTotal,
-                     size=dev_years_comp.YearsCodePro.values)
-    # layout = go.Layout(
-    #     title=dict(
-    #         text="Most Paid Jobs With Respect To Years Of Experience",
-    #         font_size=20,
-    #         x=.5),
-    # )
-    #
-    # fig.update_layout(layout)
+                     size=dev_years_comp.YearsCodePro.values,
+                     labels={"size": "Experience years",
+                             "x": "Job",
+                             "y": "Salary"})
+    layout = go.Layout(
+        title=dict(
+            text="Most Paid Jobs With Respect To Years Of Experience",
+            font_size=20,
+            x=.5),
+        margin=dict(t=60, l=10, r=10, b=10)
+
+    )
+
+    fig.update_layout(layout)
     fig.update_yaxes(
         title="Salary",
         tickangle=45,
@@ -267,8 +272,13 @@ def create_gender_dist_chart(gender_count):
         textposition='inside',
         textinfo='percent+label')
     fig.update_layout(
-        width=700,
-        height=300,
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=.85,
+            xanchor="right",
+            x=.80
+        ),
         margin=dict(t=30, l=10, r=10, b=10),
         title_font_size=20,
         title_x=0.5
@@ -346,8 +356,6 @@ def create_education_vs_job_chart():
             text="Education Level vs. Job Occupation",
             font_size=20,
             x=.5),
-        width=1700,
-        height=500,
         margin=dict(t=60, l=10, r=10, b=10)
     )
 
@@ -387,10 +395,9 @@ def create_country_dist_chart():
         textposition='inside',
         textinfo='percent+label')
     fig.update_layout(
-        width=700,
-        height=300,
         margin=dict(t=30, l=10, r=10, b=10),
         title_font_size=20,
-        title_x=0.5)
+        title_x=0.5,
+        showlegend=False)
 
     return fig
