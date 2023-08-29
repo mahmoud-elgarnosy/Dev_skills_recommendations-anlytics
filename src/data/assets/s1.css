@@ -71,41 +71,40 @@
 
   .one.column,
   .one.columns {
-    width: 4.66666666667%;
+    width: calc(100% * 1 / 12);
   }
   .two.columns {
-    width: 13.3333333333%;
+    width: calc(100% * 2 / 12);
   }
   .three.columns {
-    width: 22%;
+    width: calc(100% * 3 / 12);
   }
   .four.columns {
-    width: 30.6666666667%;
+    width: calc(100% * 4 / 12);
   }
   .five.columns {
-    width: 39.3333333333%;
+    width: calc(100% * 5 / 12);
   }
   .six.columns {
-    width: 48%;
+    width: calc(100% * 6 / 12);
   }
   .seven.columns {
-    width: 56.6666666667%;
+    width: calc(100% * 7 / 12);
   }
   .eight.columns {
-    width: 65.3333333333%;
+    width: calc(100% * 8 / 12);
   }
   .nine.columns {
-    width: 74%;
+    width: calc(100% * 9 / 12);
   }
   .ten.columns {
-    width: 82.6666666667%;
+    width: calc(100% * 10 / 12);
   }
   .eleven.columns {
-    width: 91.3333333333%;
+    width: calc(100% * 11 / 12);
   }
   .twelve.columns {
-    width: 100%;
-    margin-left: 0;
+    width: calc(100% * 12 / 12);
   }
 
   .one-third.column {

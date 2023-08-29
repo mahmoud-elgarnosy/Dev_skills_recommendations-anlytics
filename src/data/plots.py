@@ -6,16 +6,17 @@ import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 
+# Defining paths
 script_dir = os.path.dirname(os.path.abspath(__file__))
 LOAD_PATH = os.path.join(script_dir, '../../data/interim/')
 LOAD_ANALYSIS_DF = '4.0-preprocessed-data-analysation.pkl'
 LOAD_SKILLS_DEV = '7.0-Chosen_features_and_roles.pkl'
+
+# reading dataframes
 survey = pd.read_pickle(LOAD_PATH + LOAD_ANALYSIS_DF)
 skills_dev_df = pd.read_pickle(LOAD_PATH + LOAD_SKILLS_DEV)
-
 with open(LOAD_PATH + 'chosen_columns.pkl', 'rb') as f:
     chosen_columns = pickle.load(f)
-
 survey = survey[chosen_columns['analysis']]
 
 
@@ -33,6 +34,7 @@ def binarize(df, column):
 
 
 def change_labels(x: str):
+    # make short names to make plots more beautiful
     if 'Developer_' in x:
         x = x.replace('Developer_', '') + ' dev'
 
@@ -101,7 +103,6 @@ def create_employment_vs_dev_type_chart(dev_types):
     fig = go.Figure()
 
     # Get the viridis color scale
-    # colorscale = px.colors.qualitative.Dark24
 
     for i, employment_type in enumerate(employment_dev_percentage.index):
         fig.add_trace(go.Bar(
@@ -109,7 +110,8 @@ def create_employment_vs_dev_type_chart(dev_types):
             y=dev_types,
             x=employment_dev_percentage.loc[employment_type, :].values,
             orientation='h',
-            # marker_color=colorscale[i % len(colorscale)]  # Cycle through viridis colors
+            customdata=np.repeat(employment_type, len(dev_types)),
+            hovertemplate="%{x:.2f}% of %{y}'s are worked as %{customdata}"
         ))
     # Set layout
     layout = go.Layout(
@@ -159,7 +161,7 @@ def create_most_used_languages_chart():
 
     # Get the viridis color scale
     # colorscale = px.colors.qualitative.Dark24
-
+    colors = ["#66c2a5", "#a6d854"]
     for i, used_type in enumerate(df.columns):
         text = (df.loc[:, used_type].values * 100).astype(int)
         text = [f"{value}%" for value in text]
@@ -170,8 +172,11 @@ def create_most_used_languages_chart():
             x=(df.loc[:, used_type].values * 100).astype(int),
             orientation='h',
             text=text,
-            # marker_color=colorscale[i % len(colorscale)]  # Cycle through viridis colors
-        ))
+            customdata=np.repeat(used_type, len(text)),
+            hovertemplate='%{x}% of developers are %{customdata} %{y}',
+            marker_color=colors[i]))
+        # marker_color=colorscale[i % len(colorscale)]  # Cycle through viridis colors
+
     # Set layout
     layout = go.Layout(
         barmode='group',
@@ -184,24 +189,29 @@ def create_most_used_languages_chart():
             yanchor="top",
             y=0.99,
             xanchor="left",
-            x=0.01)
+            x=0.01),
+        margin=dict(t=30, l=0, r=0, b=0),
+
     )
 
     # Reverse the y-axis
     layout.yaxis['side'] = 'right'
 
     fig.update_layout(layout)
-    fig.update_yaxes(title="Programing Languages",
-                     tickmode='array',
-                     tickvals=np.arange(len(df.index)),
-                     ticktext=df.index,
-                     tickangle=45,
-                     tickfont=dict(family='Rockwell', size=15))
+    fig.update_yaxes(
+        tickmode='array',
+        tickvals=np.arange(len(df.index)),
+        ticktext=df.index,
+        tickangle=45,
+        tickfont=dict(family='Rockwell', size=15),
+    )
 
     fig.update_xaxes(title="Percentage (%)",
                      tickfont={'size': 20},
-                     autorange="reversed")
-
+                     autorange="reversed",
+                     visible=False,
+                     showticklabels=False
+                     )
     return fig
 
 
@@ -227,6 +237,7 @@ def create_jobs_salaries_chart():
     fig = px.scatter(x=dev_years_comp.index,
                      y=dev_years_comp.CompTotal,
                      size=dev_years_comp.YearsCodePro.values,
+                     color_discrete_sequence=["#66c2a5"],
                      labels={"size": "Experience years",
                              "x": "Job",
                              "y": "Salary"})
@@ -250,7 +261,7 @@ def create_jobs_salaries_chart():
         tickvals=np.arange(len(dev_years_comp.index)),
         ticktext=[change_labels(x) for x in dev_years_comp.index],
         tickangle=45,
-        tickfont=dict(family='Rockwell', size=12))
+        tickfont=dict(family='Rockwell', size=15))
 
     return fig
 
@@ -266,20 +277,16 @@ def create_gender_dist_chart(gender_count):
     fig = px.pie(gender_count,
                  values=gender_count.values,
                  names=gender_count.index,
-                 title='Gender Distribution')
+                 title='Gender Distribution',
+                 color_discrete_sequence=["#66c2a5", "#a6d854"],
+                 )
 
     fig.update_traces(
         textposition='inside',
         textinfo='percent+label')
     fig.update_layout(
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=.85,
-            xanchor="right",
-            x=.80
-        ),
-        margin=dict(t=30, l=10, r=10, b=10),
+        showlegend=False,
+        margin=dict(t=30, l=0, r=0, b=0),
         title_font_size=20,
         title_x=0.5
     )
@@ -347,7 +354,9 @@ def create_education_vs_job_chart():
         color="EdLevel",
         labels={"Occupation": "Percentage (%)"},
         category_orders={"EdLevel": custom_order},
+        custom_data="EdLevel",
         text=text,
+        color_discrete_sequence=px.colors.qualitative.Set2
     )
 
     # Customize layout using Plotly graph objects
@@ -356,11 +365,13 @@ def create_education_vs_job_chart():
             text="Education Level vs. Job Occupation",
             font_size=20,
             x=.5),
-        margin=dict(t=60, l=10, r=10, b=10)
+        margin=dict(t=30, l=0, r=0, b=0)
     )
 
     fig.update_layout(layout)
-    fig.update_traces(textfont_size=12, textangle=0, textposition="inside", cliponaxis=False)
+    fig.update_traces(textfont_size=12, textangle=0,
+                      textposition="inside", cliponaxis=False, hovertemplate="%{y:.2f}% of %{x}'s are %{customdata} "
+                                                                             "degree holders")
     fig.update_yaxes(
         title="Percentage (%)",
         tickangle=45,
@@ -390,7 +401,9 @@ def create_country_dist_chart():
         top10_country,
         values=top10_country.values,
         names=top10_country.index,
-        title='Top 10 Country Distribution')
+        title='Top 10 Country Distribution',
+        color_discrete_sequence=px.colors.qualitative.Set2
+    )
     fig.update_traces(
         textposition='inside',
         textinfo='percent+label')

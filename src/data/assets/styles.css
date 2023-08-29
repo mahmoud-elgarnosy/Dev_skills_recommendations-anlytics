@@ -1,5 +1,7 @@
 body {
   background-color: #f2f2f2;
+  margin: 0;
+  padding: 0;
   /*overflow:hidden*/
   /* margin: 5%; */
 }
@@ -64,3 +66,69 @@ h2, p {
     margin: 0; /* Remove margin */
     padding: 0; /* Remove padding */
   }
+
+/* Reset some default styles and set box-sizing */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Set styles for the header */
+.header {
+  background-color: #333;
+  box-shadow: 0 0 2px lightgrey;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Set styles for the content */
+#page-content {
+  padding: 20px;
+}
+
+/* Optional: Style links in the content */
+a {
+  color: #007BFF;
+  text-decoration: underline;
+}
+
+
+.header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.title {
+  width: 100%;
+  margin: .7em auto;
+  overflow: hidden;
+  text-align: center;
+  font-weight:300;
+  color: black;
+}
+.title:before, .title:after {
+  content: "";
+  display: inline-block;
+  width: 50%;
+  margin: 0 .5em 0 -55%;
+  vertical-align: middle;
+  border-bottom: 1px solid;
+}
+.title:after {
+  margin: 0 -55% 0 .5em;
+}

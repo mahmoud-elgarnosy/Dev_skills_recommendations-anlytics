@@ -118,7 +118,7 @@ def register_callbacks(app):
         if selected_skills_count < 3:
             return {}
 
-        if selected_skills_count > 56:
+        if selected_skills_count > 30:
             return {}
 
         if all(skill_list is None for skill_list in selected_skills):
@@ -153,7 +153,7 @@ def register_callbacks(app):
         if selected_skills_count < 3:
             return "Please select at least 3 skills to generate the figure."
 
-        if selected_skills_count > 56:
-            return "Selected skills are more than the threshold of 56."
+        if selected_skills_count > 30:
+            return "Selected skills are more than the threshold of 30."
 
         return ""

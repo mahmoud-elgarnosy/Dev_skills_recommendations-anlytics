@@ -77,7 +77,7 @@ def create_toggle_switch():
         html.Div: A Div containing the toggle switch and labels.
     """
     return html.Div([
-        html.Strong(f"Predict jobs", style={'font-weight': '400', 'font-size': 25, 'display': 'inline-block'}),
+        html.H3(f"Predict jobs", style={'display': 'inline-block'}),
         daq.ToggleSwitch(
             id='toggle-switch',
             value=False,
@@ -87,7 +87,7 @@ def create_toggle_switch():
             size=40,
             style={'display': 'inline-block'}
         ),
-        html.Strong(f"Simulate skills", style={'font-weight': '400', 'font-size': 25, 'display': 'inline-block'})],
+        html.H3(f"Simulate skills", style={'display': 'inline-block'})],
         style={'text-align': 'center', 'margin': 'auto'})
 
 
@@ -178,7 +178,7 @@ def create_min_max_skills_header():
     """
     return html.Div(
         id="min-max-skills-header",
-        children=[html.H2("Select between 3 and 56 skills", style={'textAlign': 'center'})]
+        children=[html.H3("Select between 3 and 30 skills", style={'textAlign': 'center'})]
     )
 
 

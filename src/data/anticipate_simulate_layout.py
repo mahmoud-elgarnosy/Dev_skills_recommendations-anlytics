@@ -14,7 +14,7 @@ def create_layout():
 
     # Create the main layout using Dash HTML components
     app_layout = html.Div([
-        html.H1("Anticipate my job and simulate more skills", style={'textAlign': 'center'}),
+        html.H2("Anticipate my job and simulate more skills", style={'textAlign': 'center'}, className='title'),
 
         # Main container for the page
         html.Div(
