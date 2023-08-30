@@ -13,19 +13,19 @@ def create_summary_banner():
             html.H2(f"{total_employers}", style={'font-size': '30px'}),
             html.P("No. of survey respondents"),
             html.Div(className="color-box top_header", style={"background-color": "#66c2a5"})
-        ], className="pretty_container ", style={'width': '31%', 'float': 'left'}),
+        ], className="pretty_container ", style={'width': '32%', 'float': 'left'}),
 
         html.Div([
             html.H2(f"{part_time}", style={'font-size': '30px'}),
             html.P("No. of part-time employees"),
             html.Div(className="color-box top_header", style={"background-color": "#3366cc"})
-        ], className="pretty_container", style={'width': '31%', 'float': 'left'}),
+        ], className="pretty_container", style={'width': '32%', 'float': 'left'}),
 
         html.Div([
             html.H2(f"{freelancer}", style={'font-size': '30px'}),
             html.P("No. of freelancer employees"),
             html.Div(className="color-box top_header", style={"background-color": "#d62728"})
-        ], className="pretty_container", style={'width': '31%', 'float': 'left'}),
+        ], className="pretty_container", style={'width': '32%', 'float': 'left'}),
 
     ], className="row")
 

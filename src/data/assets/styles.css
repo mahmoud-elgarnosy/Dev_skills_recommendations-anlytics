@@ -77,7 +77,7 @@ h2, p {
 /* Set styles for the header */
 .header {
   background-color: #333;
-  box-shadow: 0 0 2px lightgrey;
+  box-shadow: 2px 2px 2px grey;
   color: white;
   padding: 10px;
   display: flex;
