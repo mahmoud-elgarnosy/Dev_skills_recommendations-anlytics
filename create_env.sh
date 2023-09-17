@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Create the Conda environment
-conda create --name Rec-skills --yes
+conda create --name skills_analysis -y --file environment.yml
 
 # Activate the environment
-conda activate Rec-skills
+conda activate skills_analysis
 
 # uncomment these lines to install pytorch
 # Check if GPU is available
@@ -20,5 +20,5 @@ fi
 conda env update --name Rec-skills --file requirements.yml --yes
 
 # Install python kernel to run jupyter notebook
-conda install -c anaconda ipykernel
-python -m ipykernel install --user --name=Rec-skills
+conda install -c anaconda ipykernel -y
+python -m ipykernel install --user --name=skills_analysis

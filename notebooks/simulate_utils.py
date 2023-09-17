@@ -28,21 +28,21 @@ def build_heatmap_dev_skills_df():
 def get_related_skills(target_jop, already_have_skills):
     heatmap_dev_skills_df = build_heatmap_dev_skills_df()
     dev_skills = heatmap_dev_skills_df.loc[target_jop, :].sort_values(ascending=False)
-    related_skills = dev_skills[dev_skills > 0]
+    related_skills = dev_skills[dev_skills > .5]
     related_skills = related_skills[~related_skills.index.isin(already_have_skills)].index
     return related_skills
 
 
-def get_recommended_skills(target_jop, already_have_skills, number_recommended_skills=5):
+def get_recommended_skills(target_jop, already_have_skills):
     already_have_skills_list = already_have_skills.copy()
     features_names, target_names, model = utils.fetch_best_model_data()
     related_skills = get_related_skills(target_jop, already_have_skills_list)
     recommended_skills = []
+    df = utils.prepare_df(already_have_skills_list, features_names)
+    predictions = utils.predict_roles(model, df, target_names)
+    base_prediction = predictions[target_jop]
 
-    for i in range(number_recommended_skills):
-        df = utils.prepare_df(already_have_skills_list, features_names)
-        predictions = utils.predict_roles(model, df, target_names)
-        base_prediction = predictions[target_jop]
+    while (base_prediction < .98) or (len(recommended_skills) < 10):
         most_related_skills = {}
         for skill in related_skills:
             new_skills = already_have_skills_list + [skill]
@@ -51,16 +51,27 @@ def get_recommended_skills(target_jop, already_have_skills, number_recommended_s
             skill_prediction = predictions[target_jop]
 
             uplift_skill_prediction = (skill_prediction - base_prediction) / base_prediction
-            most_related_skills[skill] = uplift_skill_prediction
-        most_related_skills = pd.Series(most_related_skills).sort_values(ascending=False)
+            most_related_skills[skill] = [uplift_skill_prediction, skill_prediction]
+        most_related_skills = pd.DataFrame.from_dict(most_related_skills,
+                                                     orient='index',
+                                                     columns=['uplift_skill', 'skill_prediction']).sort_values(
+            by='uplift_skill',
+            ascending=False)
+        if most_related_skills.empty:
+            break
+        base_prediction = most_related_skills['skill_prediction'].values[0]
         most_related_skill = most_related_skills.index.values[0]
+
+        # print(target_jop, most_related_skill, most_related_skills['skill_prediction'].values[0],
+        #       most_related_skills['uplift_skill'].values[0])
+
         related_skills = list(related_skills)
         related_skills.remove(most_related_skill)
         already_have_skills_list += [most_related_skill]
         recommended_skills += [most_related_skill]
-    # df = utils.prepare_df(already_have_skills_list, features_names)
-    # predictions = utils.predict_roles(model, df, target_names)
-    # new_prediction = predictions[target_jop]
+
+        if len(recommended_skills) > 15:
+            break
 
     return recommended_skills
 
@@ -75,9 +86,8 @@ def get_all_skills():
     return all_skills, categories, categories_skills
 
 
-def get_recommended_categories(target_jop, already_have_skills, number_recommended_skills=5):
-    recommended_skills = get_recommended_skills(target_jop, already_have_skills,
-                                                number_recommended_skills)
+def get_recommended_categories(target_jop, already_have_skills):
+    recommended_skills = get_recommended_skills(target_jop, already_have_skills)
 
     all_skills, categories, _ = get_all_skills()
     recommended_categories = {key: [] for key in categories}

@@ -1,6 +1,6 @@
-import app_utils
+import src.data.app_utils as app_utils
 from dash import html, Input, Output
-from notebooks import prediction_utils, simulate_utils
+from notebooks import simulate_utils
 
 
 def register_callbacks(app):
@@ -89,7 +89,7 @@ def register_callbacks(app):
         """
         selected_skills = [skill for skills in selected_skills for skill in (skills or [])]
         if target_jop and len(selected_skills) > 2:
-            simulate_skills_dict = simulate_utils.get_recommended_categories(target_jop, selected_skills, 10)
+            simulate_skills_dict = simulate_utils.get_recommended_categories(target_jop, selected_skills)
             predictions = app_utils.get_jobs_predictions(selected_skills)
             current_job = list(predictions.index)[0]
             return app_utils.create_selected_simulated_skills(simulate_skills_dict, "Simulated Skills",

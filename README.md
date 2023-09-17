@@ -1,57 +1,65 @@
-Dev_skills_recommendations-anlytics
-==============================
+# Career Transition and Skill Enhancement
+StackOverflow 2023: Anticipate, Simulate, and Gain Insights for Your Career
 
-understand the state of developer skills heading into 2023
+## Overview
 
-Project Organization
-------------
+This project aims to provide valuable insights and tools based on the StackOverflow Survey results of 2023. It offers three main features:
 
-    ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
-    ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
-    │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
-    │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
-    │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
-    │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-    │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
-    │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
-    │   │
-    │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
-    │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
-    │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
-    │
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
+1. **Anticipate Jobs:** Anticipate potential job roles based on your chosen skills.
+2. **Simulate Skills:** Simulate and explore additional skills based on your existing ones.
+3. **Dashboard Insights:** Visualize and explore insights about skills and job roles.
 
 
---------
+## Demo
 
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
+Include a link to a live demo of your web application if available.
+
+## Getting Started
+
+To run this project locally, follow these steps:
+
+1. Clone this repository to your local machine.
+
+   ```bash
+   git clone https://github.com/mahmoud-elgarnosy/Dev_skills_recommendations-anlytics.git
+   cd Dev_skills_recommendations-anlytics
+
+2. Install the required dependencies.
+   
+   if windows run create_env.bat file 
+     ```bash
+    create_env.bat
+     ```
+   if linux run create_env.sh file 
+   ```bash
+    create_env.sh
+   ```
+3. Run the Dash web application.
+    ```bash
+    python src/data/index.py
+    ```
+4. Open your web browser and navigate to http://localhost:8050/ to access the application.
+
+## Features
+- Anticipate Jobs: Provide your skills and get job role predictions.
+- Simulate Skills: Discover additional skills based on your selections.
+- Dashboard Insights: Explore data-driven insights about skills and job roles. 
+
+## Usage
+
+## Technologies Used
+- [Dash by Plotly](https://dash.plotly.com/): Used for building the web application.
+- [Plotly ](https://plotly.com/): Used for creating interactive visualizations.
+- [Dash DAQ](https://dash.plotly.com/dash-daq): Integrated for user interface components.
+- [Dash Iconify](https://icon-sets.iconify.design/?query=python): For adding icons to the UI.
+
+## Contributing
+- Contributions are welcome! Feel free to open issues or pull requests to enhance this project. For major changes, please open an issue first to discuss the proposed changes.
+
+## License
+- This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+- Thanks to the StackOverflow community for their valuable survey data.
+- Special thanks to the open-source Dash and Plotly communities for their powerful tools.
+- Inspired by a passion for data-driven career decisions.

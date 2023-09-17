@@ -1,8 +1,9 @@
-from dash import dcc, html
-import plotly.express as px
-from dash_iconify import DashIconify
 import dash_daq as daq
-from notebooks import prediction_utils, simulate_utils
+import plotly.express as px
+from dash import dcc, html
+from dash_iconify import DashIconify
+
+from notebooks import simulate_utils, prediction_utils
 
 
 def get_jobs_predictions(selected_skills):

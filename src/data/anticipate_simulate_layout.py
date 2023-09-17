@@ -1,5 +1,5 @@
 from dash import dcc, html
-import app_utils
+import src.data.app_utils as app_utils
 
 
 def create_layout():

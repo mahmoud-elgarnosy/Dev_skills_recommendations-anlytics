@@ -1,11 +1,11 @@
 @echo off
 
+
 rem Create the Conda environment
-conda create --name Rec-skills -y
+conda create --name skills_analysis -y --file environment.yml
 
 rem Activate the environment
-conda activate Rec-skills
-
+conda activate skills_analysis
 
 rem Check if GPU is available
 where nvidia-smi > nul
@@ -22,4 +22,4 @@ rem conda env update --name Rec-skills --file requirements.yml -y
 
 rem Install python kernel to run jupyter notebook
 conda install -c anaconda ipykernel -y
-python -m ipykernel install --user --name=Rec-skills
+python -m ipykernel install --user --name=skills_analysis
