@@ -5,4 +5,4 @@ scikit-learn
 mlflow
 setuptools
 gunicorn
-
+dash_daq
