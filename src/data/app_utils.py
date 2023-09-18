@@ -13,15 +13,23 @@ def get_jobs_predictions(selected_skills):
     return predictions
 
 
-def get_categories_skills():
+def get_categories_skills(categories_skills=None):
     """
     Get the skills categories and skills using simulate_utils.
 
     Returns:
         dict: A dictionary containing skills categories and skills.
     """
-    _, _, categories_skills = simulate_utils.get_all_skills()
-    categories_skills = {"Languages": categories_skills["Languages"], **categories_skills}
+    if not categories_skills:
+        _, _, categories_skills = simulate_utils.get_all_skills()
+    # categories_skills = {"Languages": categories_skills["Languages"], **categories_skills}
+    categories_skills = {"Languages": categories_skills["Languages"],
+                         "Database-Envs": categories_skills["Databases"],
+                         "Cloud-Plats": categories_skills["Platforms"],
+                         "Web-Frames": categories_skills['Webframes'],
+                         "Frames & Libraries": categories_skills['MiscTechs'],
+                         'Dev-Tools': categories_skills['ToolsTechs'],
+                         "Dev-Envs": categories_skills['NEWCollabToolss']}
     return categories_skills
 
 

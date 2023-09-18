@@ -90,6 +90,7 @@ def register_callbacks(app):
         selected_skills = [skill for skills in selected_skills for skill in (skills or [])]
         if target_jop and len(selected_skills) > 2:
             simulate_skills_dict = simulate_utils.get_recommended_categories(target_jop, selected_skills)
+            simulate_skills_dict = app_utils.get_categories_skills(simulate_skills_dict)
             predictions = app_utils.get_jobs_predictions(selected_skills)
             current_job = list(predictions.index)[0]
             return app_utils.create_selected_simulated_skills(simulate_skills_dict, "Simulated Skills",

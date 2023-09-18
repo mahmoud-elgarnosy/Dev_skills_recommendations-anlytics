@@ -9,7 +9,7 @@ body {
 
 .column-left {
   float: left;
-  padding: 10px;
+  padding: 5px;
   width: 10%;
   text-align: center;
   margin: auto;
@@ -17,7 +17,7 @@ body {
 
 .column-right {
   float: left;
-  padding: 10px;
+  padding: 5px;
   width: 90%;}
 
 /* Clear floats after the columns */
