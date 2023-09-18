@@ -6,3 +6,4 @@ mlflow
 setuptools
 gunicorn
 dash_daq
+dash-iconify
