@@ -1,9 +1,9 @@
 from dash import Dash, dcc, html, Input, Output
 import dash
-import src.data.anticipate_simulate_layout as anticipate_simulate_layout
-import src.data.dashboard as dashboard
-import src.data.app_utils as app_utils
-import src.data.anticipate_simulate_callbacks as anticipate_simulate_callbacks
+from src import anticipate_simulate_layout
+from src import dashboard
+from src import app_utils
+from src import anticipate_simulate_callbacks
 
 categories_skills = app_utils.get_categories_skills()
 

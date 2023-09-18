@@ -36,7 +36,7 @@ To run this project locally, follow these steps:
    ```
 3. Run the Dash web application.
     ```bash
-    python src/data/index.py
+    python -m src.app
     ```
 4. Open your web browser and navigate to http://localhost:8050/ to access the application.
 

@@ -1,7 +1,7 @@
 import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output, State
-import app_utils
+from src import app_utils
 import numpy as np
 
 app = dash.Dash(__name__)

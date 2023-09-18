@@ -1,6 +1,6 @@
 from dash import Dash, dcc, html
 import dash
-import src.data.plots as plots
+from src import plots
 
 total_employers = len(plots.survey)
 part_time, freelancer = plots.binarize(plots.survey, 'Employment')[['Employed_part-time',

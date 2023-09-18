@@ -1,4 +1,4 @@
-import src.data.app_utils as app_utils
+from src import app_utils
 from dash import html, Input, Output
 from notebooks import simulate_utils
 

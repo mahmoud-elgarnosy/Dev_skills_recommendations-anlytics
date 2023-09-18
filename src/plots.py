@@ -8,7 +8,7 @@ import numpy as np
 
 # Defining paths
 script_dir = os.path.dirname(os.path.abspath(__file__))
-LOAD_PATH = os.path.join(script_dir, '../../data/interim/')
+LOAD_PATH = os.path.join(script_dir, '../data/interim/')
 LOAD_ANALYSIS_DF = '4.0-preprocessed-data-analysation.pkl'
 LOAD_SKILLS_DEV = '7.0-Chosen_features_and_roles.pkl'
 
