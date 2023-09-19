@@ -5,18 +5,23 @@ from sklearn.preprocessing import MultiLabelBinarizer
 import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
-
+from src.load_data import DataLoaderSingleton
+import json
+import ast
 # Defining paths
 script_dir = os.path.dirname(os.path.abspath(__file__))
 LOAD_PATH = os.path.join(script_dir, '../data/interim/')
+LOAD_ANALYSIS_DF_CSV = '4.0-preprocessed-data-analysation.csv'
 LOAD_ANALYSIS_DF = '4.0-preprocessed-data-analysation.pkl'
+
 LOAD_SKILLS_DEV = '7.0-Chosen_features_and_roles.pkl'
 
-# reading dataframes
-survey = pd.read_pickle(LOAD_PATH + LOAD_ANALYSIS_DF)
-skills_dev_df = pd.read_pickle(LOAD_PATH + LOAD_SKILLS_DEV)
-with open(LOAD_PATH + 'chosen_columns.pkl', 'rb') as f:
-    chosen_columns = pickle.load(f)
+chosen_columns = json.load(open(LOAD_PATH + 'chosen_columns.json'))
+survey = pd.read_csv(LOAD_PATH + LOAD_ANALYSIS_DF_CSV, index_col=[0])
+for column in ['Employment', 'LanguageHaveWorkedWith', 'LanguageWantToWorkWith']:
+    survey[column] = survey[column].apply(ast.literal_eval)
+skills_dev_df = DataLoaderSingleton().skills_dev_df
+
 survey = survey[chosen_columns['analysis']]
 
 
@@ -27,7 +32,6 @@ def binarize(df, column):
 
     # filter by boolean indexing
     arr = binarizer.fit_transform(df.loc[mask, column])
-
     # create DataFrame and add missing (NaN)s index values
     return (pd.DataFrame(arr, index=df.index[mask], columns=binarizer.classes_)
             .reindex(df[column].index, fill_value=0))

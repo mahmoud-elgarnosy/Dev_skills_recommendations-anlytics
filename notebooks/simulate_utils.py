@@ -2,14 +2,16 @@ import notebooks.prediction_utils as utils
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import os
+from src.load_data import DataLoaderSingleton
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-LOAD_PATH = '../data/interim/'
-LOAD_PATH = os.path.join(script_dir, LOAD_PATH)
-LOAD_SKILLS_DEV = '7.0-Chosen_features_and_roles.pkl'
-LOAD_SKILLS_DEV_CSV = '7.0-Chosen_features_and_roles.csv'
-skills_dev_df = pd.read_csv(LOAD_PATH + LOAD_SKILLS_DEV_CSV, header=[0, 1], skipinitialspace=True)
-skills_dev_df.columns = pd.MultiIndex.from_tuples(skills_dev_df.columns)
+# script_dir = os.path.dirname(os.path.abspath(__file__))
+# LOAD_PATH = '../data/interim/'
+# LOAD_PATH = os.path.join(script_dir, LOAD_PATH)
+# LOAD_SKILLS_DEV = '7.0-Chosen_features_and_roles.pkl'
+# LOAD_SKILLS_DEV_CSV = '7.0-Chosen_features_and_roles.csv'
+# skills_dev_df = pd.read_csv(LOAD_PATH + LOAD_SKILLS_DEV_CSV, header=[0, 1], skipinitialspace=True)
+# skills_dev_df.columns = pd.MultiIndex.from_tuples(skills_dev_df.columns)
+skills_dev_df = DataLoaderSingleton().skills_dev_df
 
 
 def build_heatmap_dev_skills_df():

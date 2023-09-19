@@ -3,8 +3,9 @@ import dash
 from src import plots
 
 total_employers = len(plots.survey)
-part_time, freelancer = plots.binarize(plots.survey, 'Employment')[['Employed_part-time',
-                                                                    'Independent contractor_freelancer_or self-employed']].sum().values
+binarized_df = plots.binarize(plots.survey, 'Employment')
+part_time, freelancer = binarized_df[['Employed_part-time',
+                                      'Independent contractor_freelancer_or self-employed']].sum().values
 
 
 def create_summary_banner():
@@ -87,7 +88,6 @@ app_layout = html.Div([
     ),
 
 ])
-
 
 # app = dash.Dash(__name__)
 # app.layout = app_layout
