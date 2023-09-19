@@ -10,7 +10,7 @@ categories_skills = app_utils.get_categories_skills()
 app = dash.Dash(__name__)
 server = app.server
 app.title = 'career transition'
-app._favicon = "flexibility.png"
+app._favicon = "career.png"
 # Define the navigation links
 nav_links = dcc.Link("Anticipate/Simulate", href="/predict-simulate", className="nav-link")
 nav_links_simulate = dcc.Link("Dashboard", href="/dashboard", className="nav-link")

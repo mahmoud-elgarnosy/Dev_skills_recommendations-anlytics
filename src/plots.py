@@ -18,7 +18,7 @@ LOAD_SKILLS_DEV = '7.0-Chosen_features_and_roles.pkl'
 
 chosen_columns = json.load(open(LOAD_PATH + 'chosen_columns.json'))
 survey = pd.read_csv(LOAD_PATH + LOAD_ANALYSIS_DF_CSV, index_col=[0])
-for column in ['Employment', 'LanguageHaveWorkedWith', 'LanguageWantToWorkWith']:
+for column in ['Employment', 'LanguageHaveWorkedWith', 'LanguageWantToWorkWith', 'Gender']:
     survey[column] = survey[column].apply(ast.literal_eval)
 skills_dev_df = DataLoaderSingleton().skills_dev_df
 
