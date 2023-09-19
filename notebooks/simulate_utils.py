@@ -48,38 +48,28 @@ def get_recommended_skills(target_jop, already_have_skills):
     predictions = utils.predict_roles(model, df, target_names)
     base_prediction = predictions[target_jop]
 
-    while (base_prediction < .90) or (len(recommended_skills) < 8):
-        most_related_skills = {}
-        for skill in related_skills:
-            new_skills = already_have_skills_list + [skill]
-            df = utils.prepare_df(new_skills, features_names)
-            predictions = utils.predict_roles(model, df, target_names)
-            skill_prediction = predictions[target_jop]
+    # while (base_prediction < .90) or (len(recommended_skills) < 8):
+    most_related_skills = {}
+    for skill in related_skills:
+        new_skills = already_have_skills_list + [skill]
+        df = utils.prepare_df(new_skills, features_names)
+        predictions = utils.predict_roles(model, df, target_names)
+        skill_prediction = predictions[target_jop]
 
-            uplift_skill_prediction = (skill_prediction - base_prediction) / base_prediction
-            most_related_skills[skill] = [uplift_skill_prediction, skill_prediction]
-        most_related_skills = pd.DataFrame.from_dict(most_related_skills,
-                                                     orient='index',
-                                                     columns=['uplift_skill', 'skill_prediction']).sort_values(
-            by='uplift_skill',
-            ascending=False)
-        if most_related_skills.empty:
-            break
-        base_prediction = most_related_skills['skill_prediction'].values[0]
-        most_related_skill = most_related_skills.index.values[0]
+        uplift_skill_prediction = (skill_prediction - base_prediction) / base_prediction
+        most_related_skills[skill] = [uplift_skill_prediction, skill_prediction]
 
-        # print(target_jop, most_related_skill, most_related_skills['skill_prediction'].values[0],
-        #       most_related_skills['uplift_skill'].values[0])
-
-        related_skills = list(related_skills)
-        related_skills.remove(most_related_skill)
-        already_have_skills_list += [most_related_skill]
-        recommended_skills += [most_related_skill]
-
-        if len(recommended_skills) > 10:
-            break
-
-    return recommended_skills
+    most_related_skills = pd.DataFrame.from_dict(most_related_skills,
+                                                 orient='index',
+                                                 columns=['uplift_skill', 'skill_prediction']).sort_values(
+        by='uplift_skill',
+        ascending=False)
+    most_related_skill = most_related_skills.index.values[:10]
+    df = utils.prepare_df(most_related_skill, features_names)
+    predictions = utils.predict_roles(model, df, target_names)
+    skill_prediction = predictions[target_jop]
+    print(skill_prediction)
+    return most_related_skill
 
 
 def get_all_skills():
