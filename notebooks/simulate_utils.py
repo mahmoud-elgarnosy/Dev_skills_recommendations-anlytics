@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import os
 from src.load_data import DataLoaderSingleton
+from src import singelton_model
 
 # script_dir = os.path.dirname(os.path.abspath(__file__))
 # LOAD_PATH = '../data/interim/'
@@ -39,7 +40,8 @@ def get_related_skills(target_jop, already_have_skills):
 
 def get_recommended_skills(target_jop, already_have_skills):
     already_have_skills_list = already_have_skills.copy()
-    features_names, target_names, model = utils.fetch_best_model_data()
+    loaded_model = singelton_model.ModelLoaderSingleton()
+    features_names, target_names, model = loaded_model.features_names, loaded_model.target_names, loaded_model.model
     related_skills = get_related_skills(target_jop, already_have_skills_list)
     recommended_skills = []
     df = utils.prepare_df(already_have_skills_list, features_names)

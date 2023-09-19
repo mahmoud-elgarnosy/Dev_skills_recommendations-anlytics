@@ -16,7 +16,6 @@ class DataLoaderSingleton:
         script_dir = os.path.dirname(os.path.abspath(__file__))
         LOAD_PATH = '../data/interim/'
         LOAD_PATH = os.path.join(script_dir, LOAD_PATH)
-        LOAD_SKILLS_DEV = '7.0-Chosen_features_and_roles.pkl'
         LOAD_SKILLS_DEV_CSV = '7.0-Chosen_features_and_roles.csv'
 
         # Use os.path.join to combine the directory path and filename
@@ -33,5 +32,7 @@ if __name__ == "__main__":
 
     loader2 = DataLoaderSingleton()
     data_frame2 = loader2.skills_dev_df
+
+    assert data_frame2 is data_frame1
 
     # loader1 and loader2 are the same instance, and data_frame1 and data_frame2 contain the loaded data.

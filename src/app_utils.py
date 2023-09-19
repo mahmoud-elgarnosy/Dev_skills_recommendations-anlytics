@@ -4,10 +4,12 @@ from dash import dcc, html
 from dash_iconify import DashIconify
 
 from notebooks import simulate_utils, prediction_utils
+from src import singelton_model
 
 
 def get_jobs_predictions(selected_skills):
-    features_names, target_names, model = prediction_utils.fetch_best_model_data()
+    loaded_model = singelton_model.ModelLoaderSingleton()
+    features_names, target_names, model = loaded_model.features_names, loaded_model.target_names, loaded_model.model
     df = prediction_utils.prepare_df(selected_skills, features_names)
     predictions = prediction_utils.predict_roles(model, df, target_names)
     return predictions

@@ -25,15 +25,17 @@ To run this project locally, follow these steps:
    cd Dev_skills_recommendations-anlytics
 
 2. Install the required dependencies.
-   
-   if windows run create_env.bat file 
-     ```bash
-    create_env.bat
-     ```
-   if linux run create_env.sh file 
-   ```bash
-    create_env.sh
+
+   1. create and activate virtual env
+
    ```
+   pip install --upgrade pip && pip install -r requirements.txt
+   ```
+
+   2. install requirements
+   ```
+   pip install --upgrade pip && pip install -r requirements.txt
+   
 3. Run the Dash web application.
     ```bash
     python -m src.app
