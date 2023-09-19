@@ -33,7 +33,7 @@ def build_heatmap_dev_skills_df():
 def get_related_skills(target_jop, already_have_skills):
     heatmap_dev_skills_df = build_heatmap_dev_skills_df()
     dev_skills = heatmap_dev_skills_df.loc[target_jop, :].sort_values(ascending=False)
-    related_skills = dev_skills[dev_skills > 1]
+    related_skills = dev_skills[dev_skills > .5]
     related_skills = related_skills[~related_skills.index.isin(already_have_skills)].index
     return related_skills
 
@@ -43,12 +43,9 @@ def get_recommended_skills(target_jop, already_have_skills):
     loaded_model = singelton_model.ModelLoaderSingleton()
     features_names, target_names, model = loaded_model.features_names, loaded_model.target_names, loaded_model.model
     related_skills = get_related_skills(target_jop, already_have_skills_list)
-    recommended_skills = []
     df = utils.prepare_df(already_have_skills_list, features_names)
     predictions = utils.predict_roles(model, df, target_names)
     base_prediction = predictions[target_jop]
-
-    # while (base_prediction < .90) or (len(recommended_skills) < 8):
     most_related_skills = {}
     for skill in related_skills:
         new_skills = already_have_skills_list + [skill]
@@ -65,10 +62,6 @@ def get_recommended_skills(target_jop, already_have_skills):
         by='uplift_skill',
         ascending=False)
     most_related_skill = most_related_skills.index.values[:10]
-    df = utils.prepare_df(most_related_skill, features_names)
-    predictions = utils.predict_roles(model, df, target_names)
-    skill_prediction = predictions[target_jop]
-    print(skill_prediction)
     return most_related_skill
 
 
