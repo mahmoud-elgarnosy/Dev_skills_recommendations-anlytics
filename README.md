@@ -12,7 +12,7 @@ This project aims to provide valuable insights and tools based on the StackOverf
 
 ## Demo
 
-Include a link to a live demo of your web application if available.
+https://career-transition.onrender.com/
 
 ## Getting Started
 
@@ -29,7 +29,7 @@ To run this project locally, follow these steps:
    1. create and activate virtual env
 
    ```
-   pip install --upgrade pip && pip install -r requirements.txt
+   python3 -m venv career && source career/bin/activate
    ```
 
    2. install requirements
@@ -40,6 +40,7 @@ To run this project locally, follow these steps:
     ```bash
     python -m src.app
     ```
+   
 4. Open your web browser and navigate to http://localhost:8050/ to access the application.
 
 ## Features
@@ -48,6 +49,15 @@ To run this project locally, follow these steps:
 - Dashboard Insights: Explore data-driven insights about skills and job roles. 
 
 ## Usage
+1. If you anticipate / predict your current jobs: choose your skills and let the model anticipate your current job  
+![alt text](reports/figures/predict.PNG)
+2. Now the time to develop yourself to gain more skills in your current job, or you need to shift your career let the model simulate skills related to the target career
+![alt text](reports/figures/simulate.PNG)
+3. insightful dashboard that supports decision-making in your career transition by showcasing career growth
+trends, compensation insights, and educational background preferences for specific jobs
+![alt text](reports/figures/dashboard1.PNG)
+![alt text](reports/figures/dashboard2.PNG)
+
 
 ## Technologies Used
 - [Dash by Plotly](https://dash.plotly.com/): Used for building the web application.

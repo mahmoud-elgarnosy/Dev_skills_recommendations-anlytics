@@ -18,6 +18,7 @@ class ModelLoaderSingleton:
 if __name__ == "__main__":
     loader1 = ModelLoaderSingleton()
     model1 = loader1.model
+    print(loader1.features_names)
 
     loader2 = ModelLoaderSingleton()
     model2 = loader2.model
