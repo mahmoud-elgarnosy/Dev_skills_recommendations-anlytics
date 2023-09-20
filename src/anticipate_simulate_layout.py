@@ -45,6 +45,7 @@ def create_layout():
                         app_utils.create_probability_chart(),
                         dcc.RadioItems(id="job-radio"),
                         html.Div(id="loading-output"),
+                        html.Div(id="loading_probability-chart-output"),
                         html.Div(id="simulated-skills-output"),
                         html.Div(id='current-target-job')
                     ])

@@ -14,6 +14,8 @@ This project aims to provide valuable insights and tools based on the StackOverf
 
 https://career-transition.onrender.com/
 
+__It is better to use it locally because the deployment server is so slow__
+
 ## Getting Started
 
 To run this project locally, follow these steps:

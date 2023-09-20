@@ -100,7 +100,7 @@ def register_callbacks(app):
                                       'Please select at least 3 skills and one target job to simulate skills']), ''
 
     @app.callback(
-        Output("probability-chart", "figure"),
+        [Output("probability-chart", "figure"), Output('loading_probability-chart-output', 'children')],
         [Input({"type": "skill-checkbox", "category": category}, "value")
          for category in categories_skills.keys()]
     )
@@ -117,22 +117,22 @@ def register_callbacks(app):
         selected_skills_count = sum(len(skills) if skills else 0 for skills in selected_skills)
 
         if selected_skills_count < 3:
-            return {}
+            return {}, ''
 
         if selected_skills_count > 30:
-            return {}
+            return {}, ''
 
         if all(skill_list is None for skill_list in selected_skills):
-            return {}
+            return {}, ''
 
         selected_skills = [skill for skills in selected_skills for skill in (skills or [])]
 
         if selected_skills:
             predictions = app_utils.get_jobs_predictions(selected_skills)
             fig = app_utils.plot_predictions_jobs(predictions, threshold=10)
-            return fig
+            return fig, ''
         else:
-            return {}
+            return {}, ''
 
     @app.callback(
         Output("message-div", "children"),

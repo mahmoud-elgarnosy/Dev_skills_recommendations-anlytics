@@ -98,9 +98,6 @@ def get_recommended_skills(target_job, already_have_skills):
         chosen_skills = sorted_uplifts.index[:15]
     elif final_prediction > 0.95 and chosen_skills_prediction < 0.15:
         chosen_skills = sorted_uplifts.index[:2]
-    elif final_prediction > 0.98 and chosen_skills_prediction > 0.98:
-        chosen_skills = sorted_uplifts.index[:5]
-
     return chosen_skills
 
 

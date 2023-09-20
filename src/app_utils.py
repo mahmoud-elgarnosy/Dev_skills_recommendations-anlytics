@@ -216,7 +216,12 @@ def create_probability_chart():
         children=[
             html.H2('Current job expectations', style={'textAlign': 'center'}),
             create_message_output(),
-            dcc.Graph(id="probability-chart"),
+            html.Div(children=[
+                dcc.Graph(id="probability-chart"),
+                dcc.Loading(
+                    id="loading_probability-chart-output",
+                    type="circle")
+            ]),
         ],
     )
 
